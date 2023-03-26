@@ -31,7 +31,6 @@ VALUES
     ('jsmith@uwaterloo.ca', '002W', 'Physics'),
     ('b123abc@uwaterloo.ca', '999S', 'Math and BBA');
 
-
 --@block
 INSERT INTO term (term_id, student_id) 
 VALUES
@@ -42,9 +41,7 @@ VALUES
 --@block
 INSERT INTO Course (term_id, grade, course_id) 
 VALUES
-    (2, -1, 'Math136'),
-    (1, 100, 'Math137P'),
-    (3, 69, 'CS341');
+    (2, 50, 'Bus101');
 
 --@block
 SELECT * FROM student;
@@ -54,3 +51,31 @@ SELECT * FROM term;
 
 --@block
 SELECT * FROM course;
+
+--@block This makes sure no course can appear twice in a given term
+ALTER TABLE course ADD UNIQUE (term_id, course_id);
+
+--@block This makes sure that no student has the same term id twice
+ALTER TABLE Term ADD UNIQUE (term_id, student_id);
+
+--@block Queries all the related information for a given student
+SELECT * FROM student 
+INNER JOIN term ON student.id = term.student_id 
+INNER JOIN course ON term.id = course.term_id
+WHERE student.id = 1
+ORDER BY student.id, term.id, course.id;
+
+--@block
+SELECT * 
+    FROM student
+    INNER JOIN term 
+    ON student.id = term.student_id;
+
+--@block
+ALTER TABLE Term RENAME COLUMN term_id TO term_name;
+
+--@block Find the average overall grade for a given student
+SELECT AVG(course.grade) FROM student 
+INNER JOIN term ON student.id = term.student_id 
+INNER JOIN course ON term.id = course.term_id
+WHERE student.id = 1 AND course.grade != -1;
