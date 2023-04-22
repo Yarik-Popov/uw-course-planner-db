@@ -32,7 +32,7 @@ VALUES
     ('b123abc@uwaterloo.ca', '999S', 'Math and BBA');
 
 --@block
-INSERT INTO term (term_id, student_id) 
+INSERT INTO term (term_name, student_id) 
 VALUES
     ('1A', 1),
     ('1B', 1),
@@ -67,9 +67,9 @@ ORDER BY student.id, term.id, course.id;
 
 --@block
 SELECT * 
-    FROM student
-    INNER JOIN term 
-    ON student.id = term.student_id;
+FROM student
+INNER JOIN term 
+ON student.id = term.student_id;
 
 --@block
 ALTER TABLE Term RENAME COLUMN term_id TO term_name;
@@ -79,3 +79,31 @@ SELECT AVG(course.grade) FROM student
 INNER JOIN term ON student.id = term.student_id 
 INNER JOIN course ON term.id = course.term_id
 WHERE student.id = 1 AND course.grade != -1;
+
+--@block Finds the maximum grade of a given student
+SELECT MAX(course.grade) FROM student 
+INNER JOIN term ON student.id = term.student_id 
+INNER JOIN course ON term.id = course.term_id
+WHERE student.id = 1 AND course.grade != -1;
+
+--@block Finds the minimum grade of a given student
+SELECT MIN(course.grade) FROM student 
+INNER JOIN term ON student.id = term.student_id 
+INNER JOIN course ON term.id = course.term_id
+WHERE student.id = 2 AND course.grade != -1;
+
+--@block Finds the number of completed courses (grade > -1)
+SELECT COUNT(*) FROM student
+INNER JOIN term ON student.id = term.student_id 
+INNER JOIN course ON term.id = course.term_id
+WHERE student.id = 1 AND course.grade != -1;
+
+--@block Queries the number of active courses (grade is -1)
+SELECT COUNT(*) FROM student
+INNER JOIN term ON student.id = term.student_id 
+INNER JOIN course ON term.id = course.term_id
+WHERE student.id = 2 AND course.grade = -1;
+
+--@block Delete a user
+DELETE FROM student
+WHERE student.id = 3;
