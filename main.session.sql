@@ -1,5 +1,5 @@
 
---@block
+--@block Creates the student table. Start term ###[FWS] the ### indicate the last 3 digits of a year
 CREATE TABLE Student (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL UNIQUE,
@@ -7,7 +7,7 @@ CREATE TABLE Student (
     major VARCHAR(255) NOT NULL
 );
 
---@block
+--@block Creates the term table. Term id is #[AB] 
 CREATE TABLE Term (
     id INT PRIMARY KEY AUTO_INCREMENT,
     term_id VARCHAR(2) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE Term (
     FOREIGN KEY (student_id) REFERENCES Student(id)
 );
 
---@block
+--@block Creates the course table
 CREATE TABLE Course (
     id INT PRIMARY KEY AUTO_INCREMENT,
     term_id INT NOT NULL,
@@ -24,32 +24,32 @@ CREATE TABLE Course (
     FOREIGN KEY (term_id) REFERENCES Term(id)
 );
 
---@block
+--@block Inserts some data into the student table
 INSERT INTO student(username, start_term, major) 
 VALUES
     ('yepopov@uwaterloo.ca', '022F', 'CS'),
     ('jsmith@uwaterloo.ca', '002W', 'Physics'),
     ('b123abc@uwaterloo.ca', '999S', 'Math and BBA');
 
---@block
+--@block Inserts some data into the term table
 INSERT INTO term (term_name, student_id) 
 VALUES
     ('1A', 1),
     ('1B', 1),
     ('W1', 2);
 
---@block
+--@block Inserts some data into the course table
 INSERT INTO Course (term_id, grade, course_id) 
 VALUES
     (2, 50, 'Bus101');
 
---@block
+--@block Queries the student table
 SELECT * FROM student;
 
---@block
+--@block Queries the term table
 SELECT * FROM term;
 
---@block
+--@block Queries the course table
 SELECT * FROM course;
 
 --@block This makes sure no course can appear twice in a given term
@@ -65,34 +65,34 @@ INNER JOIN course ON term.id = course.term_id
 WHERE student.id = 1
 ORDER BY student.id, term.id, course.id;
 
---@block
+--@block Queries the matching student and term data 
 SELECT * 
 FROM student
 INNER JOIN term 
 ON student.id = term.student_id;
 
---@block
+--@block Renames a column
 ALTER TABLE Term RENAME COLUMN term_id TO term_name;
 
---@block Find the average overall grade for a given student
+--@block Queries the average overall grade for a given student
 SELECT AVG(course.grade) FROM student 
 INNER JOIN term ON student.id = term.student_id 
 INNER JOIN course ON term.id = course.term_id
 WHERE student.id = 1 AND course.grade != -1;
 
---@block Finds the maximum grade of a given student
+--@block Queries the maximum grade of a given student
 SELECT MAX(course.grade) FROM student 
 INNER JOIN term ON student.id = term.student_id 
 INNER JOIN course ON term.id = course.term_id
 WHERE student.id = 1 AND course.grade != -1;
 
---@block Finds the minimum grade of a given student
+--@block Queries the minimum grade of a given student
 SELECT MIN(course.grade) FROM student 
 INNER JOIN term ON student.id = term.student_id 
 INNER JOIN course ON term.id = course.term_id
 WHERE student.id = 2 AND course.grade != -1;
 
---@block Finds the number of completed courses (grade > -1)
+--@block Queries the number of completed courses (grade > -1)
 SELECT COUNT(*) FROM student
 INNER JOIN term ON student.id = term.student_id 
 INNER JOIN course ON term.id = course.term_id

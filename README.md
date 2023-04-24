@@ -7,5 +7,5 @@
 ## Supported operations
 - Adding students, terms and courses
 - Data validation on input  
-- Querying the average of a given student
+- Querying the average, maximum and minimum grades of a given student
 - Querying all of the information about a given student (Terms & Courses)
